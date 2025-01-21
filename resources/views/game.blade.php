@@ -11,56 +11,199 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #7F7FD5;   /* 紫色调 */
+            --secondary-color: #91EAE4;  /* 青色调 */
+            --accent-color: #86A8E7;     /* 蓝色调 */
+            --text-color: #2C3E50;
+            --white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(127, 127, 213, 0.2);
+        }
+
         body {
-            background: linear-gradient(to right, #4facfe, #00f2fe);
+            /* 三色渐变背景 */
+            background: linear-gradient(135deg, 
+                var(--primary-color) 0%, 
+                var(--accent-color) 50%, 
+                var(--secondary-color) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
-            color: #ffffff;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--white);
+            padding: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
         }
 
         .card {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: var(--card-bg);
             border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: clamp(1rem, 5vw, 2rem);
         }
 
         .card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .btn-primary, .btn-success {
-            border-radius: 20px;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease;
+        h2 {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: none;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.25);
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            border: none;
+            box-shadow: 0 4px 15px rgba(127, 127, 213, 0.4);
         }
 
         .btn-primary:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #3CA55C, #B5AC49);
+            border: none;
+            box-shadow: 0 4px 15px rgba(60, 165, 92, 0.4);
         }
 
         .btn-success:hover {
-            background-color: #3a7d44;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
         }
 
         #gameArea {
-            animation: fadeIn 1s ease-in-out;
+            animation: slideUp 0.5s ease-out;
         }
 
         #word {
-            font-weight: bold;
-            color: #333;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 1.5rem 0;
+            letter-spacing: 3px;
         }
 
-        @keyframes fadeIn {
+        .progress {
+            height: clamp(15px, 4vw, 20px);
+            background-color: #e9ecef;
+            border-radius: 10px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            transition: all 1s linear;
+            border-radius: 10px;
+            position: relative;
+            height: 100%;
+        }
+
+        /* 进度条颜色类 */
+        .progress-bar-safe {
+            background: linear-gradient(45deg, #34D399, #3B82F6);
+        }
+
+        .progress-bar-warning {
+            background: linear-gradient(45deg, #FBBF24, #F59E0B);
+        }
+
+        .progress-bar-danger {
+            background: linear-gradient(45deg, #EF4444, #DC2626);
+        }
+
+        /* 进度条动画效果 */
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 1rem 1rem;
+            animation: progressAnimation 1s linear infinite;
+        }
+
+        @keyframes progressAnimation {
+            0% {
+                background-position: 1rem 0;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .logos i {
+            font-size: clamp(2rem, 6vw, 3rem);
+            transition: transform 0.3s ease;
+        }
+
+        .logos i:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -68,29 +211,61 @@
             }
         }
 
-        #loader {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            display: none;
-            margin: 20px auto;
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .card {
+                margin: 1rem;
+            }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .logos i {
-            margin: 0 15px;
-            font-size: 2.5rem; /* 调整图标大小 */
+        @media (max-width: 480px) {
+            .logos {
+                gap: 1rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
         }
 
-        h2 {
-            color: #0056b3; /* 替换为你需要的颜色 */
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #E0E0E0;
+                --card-bg: rgba(44, 62, 80, 0.95);
+            }
+
+            .form-control {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+            }
+
+            .form-control:focus {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .text-muted {
+                color: #a0a0a0 !important;
+            }
+        }
+
+        /* 图标颜色调整 */
+        .bi-trophy {
+            color: #FFD700 !important; /* 金色 */
+        }
+
+        .bi-star {
+            color: var(--primary-color) !important;
+        }
+
+        .bi-cup {
+            color: var(--accent-color) !important;
         }
     </style>
 </head>
@@ -124,7 +299,16 @@
                 </div>
                 <button id="submitAnswer" class="btn btn-success w-100">Submit Answer</button>
                 <div class="mt-4">
-                    <p>Time left: <span id="timeLeft" class="fw-bold">60</span> seconds</p>
+                    <p class="mb-2">Time left: <span id="timeLeft" class="fw-bold">60</span>s</p>
+                    <div class="progress">
+                        <div id="timeProgress" class="progress-bar progress-bar-safe" 
+                            role="progressbar" 
+                            style="width: 100%;" 
+                            aria-valuenow="100" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100">
+                        </div>
+                    </div>
                     <p>Score: <span id="score" class="fw-bold">0</span></p>
                 </div>
                 <div id="loader"></div>
@@ -185,9 +369,29 @@
         });
 
         async function startGame() {
+            const totalTime = 60;
+            timer = totalTime;
+            const progressBar = document.getElementById('timeProgress');
+            const timeLeftSpan = document.getElementById('timeLeft');
+
             const interval = setInterval(() => {
                 timer--;
-                document.getElementById('timeLeft').textContent = timer;
+                const percentage = (timer / totalTime) * 100;
+                
+                // 更新进度条宽度
+                progressBar.style.width = percentage + '%';
+                timeLeftSpan.textContent = timer;
+
+                // 根据剩余时间更新进度条颜色
+                progressBar.classList.remove('progress-bar-safe', 'progress-bar-warning', 'progress-bar-danger');
+                
+                if (timer <= 10) {
+                    progressBar.classList.add('progress-bar-danger');
+                } else if (timer <= 30) {
+                    progressBar.classList.add('progress-bar-warning');
+                } else {
+                    progressBar.classList.add('progress-bar-safe');
+                }
 
                 if (timer <= 0) {
                     clearInterval(interval);
@@ -213,16 +417,55 @@
                 document.getElementById('score').textContent = score;
             }
             currentWordIndex++;
-            if (currentWordIndex < words.length) {
-                showNextWord();
+            
+            // 如果当前单词索引达到数组末尾，重新洗牌
+            if (currentWordIndex >= words.length) {
+                currentWordIndex = 0;
+                shuffleWords();
             }
+            
+            showNextWord();
             document.getElementById('answer').value = '';
         }
 
         function endGame() {
-            document.getElementById('gameArea').style.display = 'none';
-            document.getElementById('nicknameForm').style.display = 'block';
-            alert(`Game over! Your score is ${score}.`);
+            const submitButton = document.getElementById('submitAnswer');
+            const answerInput = document.getElementById('answer');
+            
+            // 禁用输入和提交按钮
+            submitButton.disabled = true;
+            answerInput.disabled = true;
+
+            // 保存分数到服务器
+            fetch('/submit_score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ 
+                    player_id: userId,
+                    score: score 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(`游戏结束！你的得分是 ${score} 分。`);
+                setTimeout(() => {
+                    document.getElementById('gameArea').style.display = 'none';
+                    document.getElementById('nicknameForm').style.display = 'block';
+                    // 重置游戏状态
+                    score = 0;
+                    timer = 60;
+                    currentWordIndex = 0;
+                    document.getElementById('score').textContent = '0';
+                    document.getElementById('timeLeft').textContent = '60';
+                }, 1000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('保存分数时出错，请稍后再试');
+            });
         }
     </script>
 </body>
