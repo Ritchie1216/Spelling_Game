@@ -4,5 +4,5 @@
 ### 2. Play game
 ![Play game](image/play_game.png)
 
-### 1. Leaderboard
+### 3. Leaderboard
 ![ Leaderboard](image/leaderboard.png)
